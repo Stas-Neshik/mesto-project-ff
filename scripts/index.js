@@ -1,42 +1,42 @@
+'use strict';
 // @todo: Темплейт карточки
 
 // @todo: DOM узлы
 
 const cardList = document.querySelector('.places__list');
-const cardTemplate = document.querySelector('#card-template').content; // Выбрал template, получил содержимое (.content) 
-const card = document.querySelector('.card');
-const deleteBtn = document.querySelector('.card__delete-button');
+  // const cardTemplate = document.getElementById('card-template').content;
+  // const cardElement = cardTemplate.cloneNode(true); 
 
 // @todo: Функция создания карточки
 
-initialCards.forEach( function addCard(element) {  // для каждого элемента массива срабатывает колбэк addCard
-  const cardElement = cardTemplate.cloneNode(true); // копирование template карточки
 
-  cardElement.querySelector('.card__image').src = element.link;
-  cardElement.querySelector('.card__image').alt = 'Красивое место';
-  cardElement.querySelector('.card__title').textContent = element.name;
-  cardElement.querySelector('.card__delete-button').addEventListener('click', deleteCard);
+const createCard = (cardData) => {
+
+  const cardTemplate = document.getElementById('card-template').content;
+  const cardElement = cardTemplate.cloneNode(true);
+  const deleteBtn = cardElement.querySelector('.card__delete-button');
+
+  cardElement.querySelector('.card__image').src = cardData.link;
+  cardElement.querySelector('.card__image').alt = cardData.name;
+  cardElement.querySelector('.card__title').textContent = cardData.name;
   cardElement.querySelector('.card__like-button').addEventListener('click', function(evt){
     evt.target.classList.toggle('card__like-button_is-active');
   });
- 
-
-
-
-  cardList.append(cardElement);
-
-})
-
-
+  deleteBtn.addEventListener('click', function () {
+    const listItem = deleteBtn.closest('.card')
+    listItem.remove();
+  })
+  
+  return cardElement;
+}
 
 // @todo: Функция удаления карточки
 
-function deleteCard (){
-  const item = document.querySelector('.places__item');
-  item.remove();
-}
-
-
+function deleteCard (){ 
+} 
 
 // @todo: Вывести карточки на страницу
 
+initialCards.forEach(function addCard(element){
+  cardList.append(createCard(element));
+});
