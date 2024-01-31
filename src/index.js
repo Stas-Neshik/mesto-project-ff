@@ -1,5 +1,7 @@
-import '../pages/index.css';
+import './pages/index.css';
+import { initialCards } from './cards';
 const cardList = document.querySelector('.places__list');
+const profileBtn = document.querySelector('.profile__edit-button');
 
 // Функция создания карточки
 
@@ -31,3 +33,11 @@ function deleteCard (evt) {
 initialCards.forEach(function addCard(element){
   cardList.append(createCard(element, deleteCard));
 });
+
+profileBtn.addEventListener('click', openPopup)
+
+function openPopup() {
+  // console.log('hello');
+  const popup = document.querySelector('.popup_type_edit')
+  popup.classList.add('popup_is-opened');
+}
