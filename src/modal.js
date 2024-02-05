@@ -1,4 +1,3 @@
-
 // Ф. Открыть Попап
 function openModal(popup) {
   popup.classList.add('popup_is-animated');

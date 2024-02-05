@@ -12,7 +12,6 @@ const formAddCard = document.forms['new-place'];
 const cardNameInput = document.querySelector('.popup__input_type_card-name');
 const urlInput = document.querySelector('.popup__input_type_url');
  
-
 // Кнопки 
 const addCardBtn= document.querySelector('.profile__add-button');
 const closeBtns = document.querySelectorAll('.popup__close');
