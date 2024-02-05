@@ -1,5 +1,3 @@
-import {openModal} from './modal';
-
 const initialCards = [
     {
       name: "Парк штата Огненная Долина, США",
@@ -27,44 +25,5 @@ const initialCards = [
     }
 ];
 
-// Функция создания карточки
-const createCard = (cardData, deleteCallback) => {
-
-  const cardTemplate = document.getElementById('card-template').content;
-  const cardElement = cardTemplate.cloneNode(true);
-
-  cardElement.querySelector('.card__image').src = cardData.link;
-  cardElement.querySelector('.card__image').alt = cardData.name;
-  cardElement.querySelector('.card__title').textContent = cardData.name;
-  cardElement.querySelector('.card__delete-button').addEventListener('click', deleteCallback);
-  cardElement.querySelector('.card__like-button').addEventListener('click', like);
-  cardElement.querySelector('.card__image').addEventListener('click', popupImage)
-
-  return cardElement;
-}
-
-// Ф. Удаление карточки (корзина)
-function deleteCard (evt) { 
-  const listItem = evt.target.closest('.card');
-  listItem.remove();
-} 
-
-// Ф. лайка карточки
-
-function like(evt) {
-    evt.target.classList.toggle('card__like-button_is-active');
-}
-
-// Ф. Попап картинки
-const popupImg = document.querySelector('.popup_type_image');
-
-function popupImage(evt) {
-  console.log(evt.target)
-  popupImg.querySelector('.popup__image').src = evt.target.src;
-  popupImg.querySelector('.popup__image').alt = evt.target.alt;
-  popupImg.querySelector('.popup__caption').textContent = evt.target.alt;
-  openModal(popupImg);
-}
-
- export {initialCards, createCard, deleteCard, like, popupImage};
+ export {initialCards};
 //  module.exports = {initialCards}; 

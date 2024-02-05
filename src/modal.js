@@ -8,7 +8,6 @@ function openModal(popup) {
 }
 
 // Ф. Закрыть Попап
-
 function closeModal (popup) {
   popup.classList.remove('popup_is-opened');
   window.removeEventListener('keydown', closeEsc);
@@ -29,4 +28,4 @@ function closeEsc (evt) {
   }
  }
 
- export {openModal, closeModal, closeArea, closeEsc};
+ export {openModal, closeModal};
