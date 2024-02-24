@@ -39,11 +39,11 @@
       <h3 class="popup__title">Редактировать профиль</h3>
       <form class="popup__form" name="edit-profile">
         <label for="user">
-        <input type="text" name="name" id="popup__name" class="popup__input popup__input_type_name" placeholder="Имя" minlength="2" maxlength="40"  required>
+        <input type="text" name="name" id="popup__name" class="popup__input popup__input_type_name" placeholder="Имя" minlength="2" maxlength="40" pattern="^[a-zA-Zа-яА-я\-ёЁ\s]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
         <span class="popup__input-error popup__name-error"></span>
       </label>
       <label for="profession">
-        <input type="text" name="description" id="popup__job" class="popup__input popup__input_type_description" placeholder="Занятие" minlength="2" maxlength="200" required>
+        <input type="text" name="description" id="popup__job" class="popup__input popup__input_type_description" placeholder="Занятие" minlength="2" maxlength="200"  pattern="^[a-zA-Zа-яА-я\-ёЁ\s]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
         <span class="popup__input-error popup__job-error"></span>
       </label>
         <button type="submit" class="button popup__button">Сохранить</button>
@@ -56,7 +56,7 @@
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Новое место</h3>
       <form class="popup__form" name="new-place">
-        <input type="text" name="place-name" id="popup__place" class="popup__input popup__input_type_card-name" placeholder="Название" minlength="2" maxlength="40" required>
+        <input type="text" name="place-name" id="popup__place" class="popup__input popup__input_type_card-name" placeholder="Название" minlength="0" maxlength="30" pattern="^[a-zA-Zа-яА-я\-ёЁ\s]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
         <span class="popup__input-error popup__place-error"></span>
         <input type="url" name="link" id="popup__url" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
         <span class="popup__input-error popup__url-error"></span>
