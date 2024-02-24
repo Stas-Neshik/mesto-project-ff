@@ -3,6 +3,8 @@ import {initialCards} from './cards';
 import {openModal, closeModal} from './modal';
 import {createCard, deleteCard, like} from './card';
 import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg} from './constants';
+import {enableValidation} from './validation';
+
 
 // Ф. Вывести карточки на страницу
 initialCards.forEach(function addCard(element){
@@ -70,4 +72,6 @@ function addCardSubmit (evt) {
   closeModal(activePopup);
 }
 
+
+enableValidation();
 export {openModal};
