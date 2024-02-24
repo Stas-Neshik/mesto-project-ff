@@ -1,11 +1,11 @@
-function showInputError (form, input) {
+function showInputError (form, input, errorMessage) {
   const errorElement = form.querySelector(`.${input.id}-error`);
   errorElement.classList.add('form__input-error_active');
-  errorElement.textContent = 'Получилось!';
+  input.classList.add('popup__input_error');
 
-  console.log(input);
-  console.log(form);
-  console.log(errorElement);
+  errorElement.textContent = errorMessage;
+
+
 };
 
 function hideInputError (form, input) {
@@ -17,7 +17,7 @@ function hideInputError (form, input) {
 
 function checkInputValidity (form, input) {
   if (!input.validity.valid) {
-     showInputError(form, input)
+     showInputError(form, input, input.validationMessage)
   }
   else hideInputError(form, input)
 };

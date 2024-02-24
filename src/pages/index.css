@@ -24,9 +24,7 @@
   opacity: 1;
 }
 
-.form__input-error_active{
-  opacity: 1;
-}
+
 
 .popup__input_error {
   border-bottom: 2px solid red;
