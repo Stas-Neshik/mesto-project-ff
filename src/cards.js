@@ -26,4 +26,3 @@ const initialCards = [
 ];
 
  export {initialCards};
-//  module.exports = {initialCards}; 
