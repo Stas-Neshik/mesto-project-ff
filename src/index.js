@@ -64,7 +64,7 @@ function addCardSubmit (evt) {
     link: urlValue
   }
 
-  cardList.prepend(createCard(newCard, deleteCard));
+  cardList.prepend(createCard(newCard, deleteCard, like));
   const activePopup = document.querySelector('.popup_is-opened');
   formAddCard.reset();
   closeModal(activePopup);
