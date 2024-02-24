@@ -24,13 +24,42 @@ function checkInputValidity (form, input) {
 
 
 
+function hasInvalidInput (inputList) {
+  return inputList.some(inputElement => {
+    return !inputElement.validity.valid;
+  });
+};
+
+
+function toggleButtonState (inputList, buttonElement) {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.disabled = true;
+    console.log('toggleButtonState работает')
+    // buttonElement.classList.add('');
+  }
+  else {
+    buttonElement.disabled = false;
+    console.log('toggleButtonState работает')
+    // buttonElement.classList.remove('');
+  };
+};
+
+
+// На чем закончил = сделал функцию про кнопку! посмотри еще раз ее. на сейчас все работает.
+// Нужно сделать класс для неактивной кнопки, потом начать делать кастомные предложения по валидации.
+
+
+
+
 // повесил слушатели на все инпуты в форме (Работает)
 function setEventListeners (formEl) {
   const inputList = Array.from(formEl.querySelectorAll('.popup__input'));
+  const btn = formEl.querySelector('.popup__button');
 
   inputList.forEach(input => {
     input.addEventListener('input', function () {
      checkInputValidity(formEl ,input);
+     toggleButtonState(inputList, btn);
     });
   });
 };
