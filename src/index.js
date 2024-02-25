@@ -2,8 +2,8 @@ import './pages/index.css';
 import {initialCards} from './cards';
 import {openModal, closeModal} from './modal';
 import {createCard, deleteCard, like} from './card';
-import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg} from './constants';
-import {enableValidation} from './validation';
+import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig} from './constants';
+import {enableValidation, clearValidation} from './validation';
 
 
 // Ф. Вывести карточки на страницу
@@ -19,7 +19,8 @@ renameProfileBtn.addEventListener('click', () => {
 });
 
 addCardBtn.addEventListener('click', () => {
-  openModal(popupAddCard)
+  clearValidation(formAddCard, validationConfig);
+  openModal(popupAddCard);
 });
 
 formAddCard.addEventListener('submit', addCardSubmit);
@@ -73,5 +74,6 @@ function addCardSubmit (evt) {
 }
 
 
-enableValidation();
+enableValidation(validationConfig);
+
 export {openModal};

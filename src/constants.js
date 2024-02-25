@@ -16,3 +16,12 @@ export const renameProfileBtn = document.querySelector('.profile__edit-button');
 export const popupProfile = document.querySelector('.popup_type_edit')
 export const popupAddCard = document.querySelector('.popup_type_new-card');
 export const popupImg = document.querySelector('.popup_type_image');
+
+export const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'form__input-error_active',
+  errorClass: 'popup__error_visible'
+}
