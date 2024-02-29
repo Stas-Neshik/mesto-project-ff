@@ -2,14 +2,16 @@ import './pages/index.css';
 import {initialCards} from './cards';
 import {openModal, closeModal} from './modal';
 import {createCard, deleteCard, like} from './card';
-import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig} from './constants';
+import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle} from './constants';
 import {enableValidation, clearValidation} from './validation';
+import {aboutMe, getCard, renameProfile, addCard, cards} from './api';
+ let userId;
 
 
 // Ф. Вывести карточки на страницу
-initialCards.forEach(function addCard(element){
-  cardList.append(createCard(element, deleteCard, like, openPopupImage));
-});
+// initialCards.forEach(element => {
+//   cardList.append(createCard(element, deleteCard, like, openPopupImage));
+// });
 
 // Листенеры 
 renameProfileBtn.addEventListener('click', () => {
@@ -22,6 +24,15 @@ addCardBtn.addEventListener('click', () => {
   clearValidation(formAddCard, validationConfig);
   openModal(popupAddCard);
 });
+
+profileImg.addEventListener('click', (evt) => {
+  abc(evt);
+  openModal(popupAvatar)
+})
+
+function abc (evt) {
+  console.log(evt.target);
+}
 
 formAddCard.addEventListener('submit', addCardSubmit);
 
@@ -43,12 +54,10 @@ btn.addEventListener('click', (evt) => {
 
 function handleFormSubmitProfile(evt) {
   evt.preventDefault(); 
-
   const nameValue = nameInput.value;
   const jobValue = jobInput.value;
-  
-  const nameTitle = document.querySelector('.profile__title');
-  const jobTitle = document.querySelector('.profile__description');
+
+  renameProfile(nameValue, jobValue);
 
   nameTitle.textContent = nameValue;
   jobTitle.textContent = jobValue;
@@ -62,12 +71,8 @@ function addCardSubmit (evt) {
   const placeValue = cardNameInput.value;
   const urlValue = urlInput.value;
 
-  const newCard = {
-    name: placeValue,
-    link: urlValue
-  }
+  addCard(placeValue, urlValue)
 
-  cardList.prepend(createCard(newCard, deleteCard, like));
   const activePopup = document.querySelector('.popup_is-opened');
   formAddCard.reset();
   closeModal(activePopup);
@@ -76,4 +81,30 @@ function addCardSubmit (evt) {
 
 enableValidation(validationConfig);
 
+
+
+
+// аватар 
+
+
+
+
+
+Promise.all([aboutMe(), getCard()])
+.then(([userInfo, cards]) => cards.forEach(card => {
+  nameTitle.textContent = userInfo.name;
+  jobTitle.textContent = userInfo.about;
+  profileImg.style.backgroundImage = `url('${userInfo.avatar}')`;
+  userId = userInfo._id;
+
+
+  cardList.append(createCard(card, deleteCard, like, openPopupImage))
+})
+);
+
+
+
 export {openModal};
+
+
+

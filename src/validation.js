@@ -1,7 +1,7 @@
 // Показ ошибки
 function showInputError (form, input, errorMessage) {
   const errorElement = form.querySelector(`.${input.id}-error`);
-  errorElement.classList.add('form__input-error_active');
+  errorElement.classList.add('popup__form-input-error_active');
   input.classList.add('popup__input_error');
   errorElement.textContent = errorMessage;
 };
@@ -10,7 +10,7 @@ function showInputError (form, input, errorMessage) {
 function hideInputError (form, input) {
   const errorElement = form.querySelector(`.${input.id}-error`);
   input.classList.remove('popup__input_error');
-  errorElement.classList.remove('form__input-error_active');
+  errorElement.classList.remove('popup__form-input-error_active');
   errorElement.textContent = '';
 };
 

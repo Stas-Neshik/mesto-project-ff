@@ -1,0 +1,7 @@
+.card__like-div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 20px;
+  height: 35px;
+}
