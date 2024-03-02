@@ -39,8 +39,6 @@ export const renameProfile = (nameUser, job) => {
       about: job
     })
   })
-  .then(res => getResponsData(res))
-.then (data => console.log(data.avatar, data.name))
 };
 
 export const changeAvatar = url => {
@@ -54,6 +52,8 @@ export const changeAvatar = url => {
       avatar: url
     })
   })
+  .then(result => getResponsData(result))
+  .then(data => data.avatar);
 }
 
 export const addCard = (place, linkUrl) => {
@@ -67,3 +67,16 @@ export const addCard = (place, linkUrl) => {
   })
   .then(data => data.json())
 }
+
+
+export const likeCounterCards = () => {
+  return fetch(`${config.baseUrl}/cards`, {
+    method: 'GET',
+    headers: config.headers
+  })
+  .then(result => getResponsData(result))
+  .then(data => console.log(data[0].likes.length))
+};
+
+
+

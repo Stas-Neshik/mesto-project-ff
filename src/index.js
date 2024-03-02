@@ -2,9 +2,9 @@ import './pages/index.css';
 import {initialCards} from './cards';
 import {openModal, closeModal} from './modal';
 import {createCard, deleteCard, like} from './card';
-import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle, formAvatar, avatarInput} from './constants';
+import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle, formAvatar, avatarInput, likeCount} from './constants';
 import {enableValidation, clearValidation} from './validation';
-import {aboutMe, getCard, renameProfile, addCard, changeAvatar} from './api';
+import {aboutMe, getCard, renameProfile, addCard, changeAvatar, likeCounterCards} from './api';
  let userId;
 
 
@@ -26,7 +26,7 @@ profileImg.addEventListener('click', () => {
   openModal(popupAvatar)
 })
 
- formAddCard.addEventListener('submit', addCardSubmit);
+formAddCard.addEventListener('submit', addCardSubmit);
 
 formElement.addEventListener('submit', handleFormSubmitProfile);
 
@@ -59,15 +59,13 @@ function handleFormSubmitProfile(evt) {
   closeModal(popupProfile);
 } 
 
- let url = 'https://avatars.mds.yandex.net/i?id=766637e7fecd215c2916b5d4741bd5f4_l-5282144-images-thumbs&n=27&h=480&w=480';
- changeAvatar(url); // работает, аватарка меняется в зависимости от положенной ссылки в url
 
 function handleFormSubmitAvatar(evt) {
   evt.preventDefault(); 
   const avatarValue = avatarInput.value;
-  console.log(avatarValue); // выводится ссылка из инпута
-  changeAvatar(avatarValue); // но аватарка не меняется
-
+  changeAvatar(avatarValue)
+  .then(result => profileImg.style.backgroundImage = `url(${result})`);
+  console.log(profileImg.style.backgroundImage);
   closeModal(popupAvatar);
 };
 
@@ -100,7 +98,4 @@ Promise.all([aboutMe(), getCard()])
 })
 );
 
-
-
 export {openModal};
-

@@ -1,3 +1,5 @@
+import {likeCounterCards} from './api';
+
 // Функция создания карточки
   const createCard = (cardData, deleteCallback, like, popupImage) => {
 
@@ -21,8 +23,11 @@ function deleteCard (evt) {
 } 
 
 // Ф. лайка карточки
-function like(evt) {
-    evt.target.classList.toggle('card__like-button_is-active');
-}
+// function like(evt) {
+//     evt.target.classList.toggle('card__like-button_is-active');
+// }
+
+
+const like = () => {}
 
 export {createCard, deleteCard, like};
