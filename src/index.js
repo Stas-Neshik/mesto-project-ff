@@ -2,16 +2,12 @@ import './pages/index.css';
 import {initialCards} from './cards';
 import {openModal, closeModal} from './modal';
 import {createCard, deleteCard, like} from './card';
-import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle} from './constants';
+import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle, formAvatar, avatarInput} from './constants';
 import {enableValidation, clearValidation} from './validation';
-import {aboutMe, getCard, renameProfile, addCard, cards} from './api';
+import {aboutMe, getCard, renameProfile, addCard, changeAvatar} from './api';
  let userId;
 
 
-// Ф. Вывести карточки на страницу
-// initialCards.forEach(element => {
-//   cardList.append(createCard(element, deleteCard, like, openPopupImage));
-// });
 
 // Листенеры 
 renameProfileBtn.addEventListener('click', () => {
@@ -25,18 +21,16 @@ addCardBtn.addEventListener('click', () => {
   openModal(popupAddCard);
 });
 
-profileImg.addEventListener('click', (evt) => {
-  abc(evt);
+profileImg.addEventListener('click', () => {
+  clearValidation(formAvatar, validationConfig);
   openModal(popupAvatar)
 })
 
-function abc (evt) {
-  console.log(evt.target);
-}
-
-formAddCard.addEventListener('submit', addCardSubmit);
+ formAddCard.addEventListener('submit', addCardSubmit);
 
 formElement.addEventListener('submit', handleFormSubmitProfile);
+
+formAvatar.addEventListener('submit', handleFormSubmitAvatar);
 
 // Ф. Попап картинки
 function openPopupImage(evt) {
@@ -63,7 +57,20 @@ function handleFormSubmitProfile(evt) {
   jobTitle.textContent = jobValue;
 
   closeModal(popupProfile);
-}
+} 
+
+ let url = 'https://avatars.mds.yandex.net/i?id=766637e7fecd215c2916b5d4741bd5f4_l-5282144-images-thumbs&n=27&h=480&w=480';
+ changeAvatar(url); // работает, аватарка меняется в зависимости от положенной ссылки в url
+
+function handleFormSubmitAvatar(evt) {
+  evt.preventDefault(); 
+  const avatarValue = avatarInput.value;
+  console.log(avatarValue); // выводится ссылка из инпута
+  changeAvatar(avatarValue); // но аватарка не меняется
+
+  closeModal(popupAvatar);
+};
+
 
 function addCardSubmit (evt) {
   evt.preventDefault(); 
@@ -83,21 +90,12 @@ enableValidation(validationConfig);
 
 
 
-
-// аватар 
-
-
-
-
-
 Promise.all([aboutMe(), getCard()])
 .then(([userInfo, cards]) => cards.forEach(card => {
   nameTitle.textContent = userInfo.name;
   jobTitle.textContent = userInfo.about;
   profileImg.style.backgroundImage = `url('${userInfo.avatar}')`;
   userId = userInfo._id;
-
-
   cardList.append(createCard(card, deleteCard, like, openPopupImage))
 })
 );
@@ -105,6 +103,4 @@ Promise.all([aboutMe(), getCard()])
 
 
 export {openModal};
-
-
 

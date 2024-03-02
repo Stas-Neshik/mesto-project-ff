@@ -1,15 +1,18 @@
 // Элементы 
 export const cardList = document.querySelector('.places__list');
 export const formElement = document.forms['edit-profile'];
+export const formAddCard = document.forms['new-place'];
+export const formAvatar = document.forms['edit-avatar']
 
 export const nameInput = formElement.querySelector('.popup__input_type_name');
 export const jobInput = formElement.querySelector('.popup__input_type_description');
-export const formAddCard = document.forms['new-place'];
+export const avatarInput = formAvatar.querySelector('.popup__input_type_avatar');
+
 export const cardNameInput = document.querySelector('.popup__input_type_card-name');
 export const urlInput = document.querySelector('.popup__input_type_url');
 export const nameTitle = document.querySelector('.profile__title');
 export const jobTitle = document.querySelector('.profile__description');
- 
+
 // Кнопки 
 export const addCardBtn= document.querySelector('.profile__add-button');
 export const closeBtns = document.querySelectorAll('.popup__close');

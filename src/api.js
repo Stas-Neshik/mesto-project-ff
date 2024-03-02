@@ -1,6 +1,4 @@
-import { profileImg } from "./constants";
-
-export const config = {
+ const config = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-7',
   headers: {
     authorization: '7b5f82f8-b7e6-429e-81d8-a0bd057389a7',
@@ -8,14 +6,14 @@ export const config = {
   }
 }
 
-export function getResponsData (res) {
+const getResponsData = res => {
   if (!res.ok) {
     return Promise.reject(`Error: ${res.status}`)
   }
   return res.json();
 }
 
-export function aboutMe () {
+export const aboutMe = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: 'GET',
     headers: config.headers
@@ -23,7 +21,8 @@ export function aboutMe () {
   .then(result => getResponsData(result))
 };
 
-export function getCard () {
+
+export const getCard = () =>  {
   return fetch(`${config.baseUrl}/cards`, {
     method: 'GET',
     headers: config.headers
@@ -31,7 +30,7 @@ export function getCard () {
   .then(result => getResponsData(result))
 };
 
-export function renameProfile (nameUser, job) {
+export const renameProfile = (nameUser, job) => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: 'PATCH',
     headers: config.headers,
@@ -40,9 +39,24 @@ export function renameProfile (nameUser, job) {
       about: job
     })
   })
+  .then(res => getResponsData(res))
+.then (data => console.log(data.avatar, data.name))
 };
 
-export function addCard (place, linkUrl) {
+export const changeAvatar = url => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: {
+      authorization: `${config.headers.authorization}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      avatar: url
+    })
+  })
+}
+
+export const addCard = (place, linkUrl) => {
   return fetch(`${config.baseUrl}/cards`, {
     method: 'POST',
     headers: config.headers,
@@ -53,38 +67,3 @@ export function addCard (place, linkUrl) {
   })
   .then(data => data.json())
 }
-
-
-
-
-
-
-
-export function cards () {
-  return fetch(`${config.baseUrl}/users/me`, {
-    method: 'GET',
-    headers: config.headers
-  })
-  .then(result => getResponsData(result))
-  .then(data => console.log(data))
-}
-
-
-
-
-
-
-
-
-
-
-
-const nameTitle = document.querySelector('.profile__title');
-const jobTitle = document.querySelector('.profile__description');
-
-
-
-
-
-
-
