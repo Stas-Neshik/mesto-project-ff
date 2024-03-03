@@ -1,13 +1,11 @@
-import './pages/index.css';
-import {initialCards} from './cards';
+import '../pages/index.css';
 import {openModal, closeModal} from './modal';
-import {createCard, deleteCard, like} from './card';
-import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle, formAvatar, avatarInput, likeCount} from './constants';
+import {createCard, deleteCard} from './card';
+import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle, formAvatar, avatarInput} from './constants';
 import {enableValidation, clearValidation} from './validation';
-import {aboutMe, getCard, renameProfile, addCard, changeAvatar, likeCounterCards} from './api';
- let userId;
-
-
+import {aboutMe, getCard, renameProfile, addCard, changeAvatar} from './api';
+let userId;
+let cardId;
 
 // Листенеры 
 renameProfileBtn.addEventListener('click', () => {
@@ -51,6 +49,9 @@ function handleFormSubmitProfile(evt) {
   const nameValue = nameInput.value;
   const jobValue = jobInput.value;
 
+  const popupButton = popupProfile.querySelector('.popup__button');
+  popupButton.textContent = 'Cохранение...';
+
   renameProfile(nameValue, jobValue);
 
   nameTitle.textContent = nameValue;
@@ -59,24 +60,27 @@ function handleFormSubmitProfile(evt) {
   closeModal(popupProfile);
 } 
 
-
 function handleFormSubmitAvatar(evt) {
   evt.preventDefault(); 
   const avatarValue = avatarInput.value;
+
   changeAvatar(avatarValue)
   .then(result => profileImg.style.backgroundImage = `url(${result})`);
-  console.log(profileImg.style.backgroundImage);
+  profileImg.style.backgroundImage = `url(${avatarValue})`;
+
   closeModal(popupAvatar);
 };
 
 
 function addCardSubmit (evt) {
   evt.preventDefault(); 
-
   const placeValue = cardNameInput.value;
   const urlValue = urlInput.value;
-
   addCard(placeValue, urlValue)
+
+  const popupButton = popupAddCard.querySelector(".popup__button");
+  popupButton.textContent = "Cохранение...";
+  
 
   const activePopup = document.querySelector('.popup_is-opened');
   formAddCard.reset();
@@ -84,18 +88,23 @@ function addCardSubmit (evt) {
 }
 
 
-enableValidation(validationConfig);
-
-
-
 Promise.all([aboutMe(), getCard()])
 .then(([userInfo, cards]) => cards.forEach(card => {
+
   nameTitle.textContent = userInfo.name;
   jobTitle.textContent = userInfo.about;
   profileImg.style.backgroundImage = `url('${userInfo.avatar}')`;
-  userId = userInfo._id;
-  cardList.append(createCard(card, deleteCard, like, openPopupImage))
+
+  let myId = userInfo._id;
+  userId = card.owner._id;
+  cardId = card._id;
+
+
+  cardList.append(createCard(card, userId, cardId, myId, deleteCard, openPopupImage))
 })
 );
 
+
+
+enableValidation(validationConfig);
 export {openModal};

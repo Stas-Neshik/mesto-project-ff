@@ -70,7 +70,7 @@
       <h3 class="popup__title">Обновить аватар</h3>
       <form class="popup__form" name="edit-avatar">
         <label for="user">
-        <input type="url" name="avatar" id="popup__avatar" class="popup__input popup__input_type_avatar" placeholder="Ссылка" minlength="2" maxlength="40" required>
+        <input type="url" name="avatar" id="popup__avatar" class="popup__input popup__input_type_avatar" placeholder="Ссылка" minlength="2" maxlength="400" required>
         <span class="popup__input-error popup__avatar-error"></span>
       </label>
         <button type="submit" class="button popup__button">Сохранить</button>
@@ -88,7 +88,7 @@
 <template id="card-template">
   <li class="places__item card">
     <img class="card__image" src="" alt="" />
-    <button type="button" class="card__delete-button"></button>
+    <button type="button" class="card__delete-button" disabled></button>
     <div class="card__description">
       <h2 class="card__title">
       </h2>

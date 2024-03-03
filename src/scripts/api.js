@@ -6,9 +6,9 @@
   }
 }
 
-const getResponsData = res => {
+const checkData = res => {
   if (!res.ok) {
-    return Promise.reject(`Error: ${res.status}`)
+    return Promise.reject(`Ошибка: ${res.status}`)
   }
   return res.json();
 }
@@ -18,7 +18,8 @@ export const aboutMe = () => {
     method: 'GET',
     headers: config.headers
   })
-  .then(result => getResponsData(result))
+  .then(result => checkData(result))
+  .catch(err => {console.log(err)}); 
 };
 
 
@@ -27,7 +28,8 @@ export const getCard = () =>  {
     method: 'GET',
     headers: config.headers
   })
-  .then(result => getResponsData(result))
+  .then(result => checkData(result))
+  .catch(err => {console.log(err)}); 
 };
 
 export const renameProfile = (nameUser, job) => {
@@ -39,6 +41,7 @@ export const renameProfile = (nameUser, job) => {
       about: job
     })
   })
+  .catch(err => {console.log(err)}); 
 };
 
 export const changeAvatar = url => {
@@ -52,9 +55,10 @@ export const changeAvatar = url => {
       avatar: url
     })
   })
-  .then(result => getResponsData(result))
-  .then(data => data.avatar);
+  .then(result => checkData(result))
+  .catch(err => {console.log(err)}); 
 }
+
 
 export const addCard = (place, linkUrl) => {
   return fetch(`${config.baseUrl}/cards`, {
@@ -66,17 +70,22 @@ export const addCard = (place, linkUrl) => {
     })
   })
   .then(data => data.json())
+  .catch(err => {console.log(err)}); 
 }
 
-
-export const likeCounterCards = () => {
-  return fetch(`${config.baseUrl}/cards`, {
-    method: 'GET',
+export const deleteCardId = (userId) => {
+  return fetch(`${config.baseUrl}/cards/${userId}`, {
+    method: 'DELETE',
     headers: config.headers
   })
-  .then(result => getResponsData(result))
-  .then(data => console.log(data[0].likes.length))
+  .then(result => checkData(result))
 };
 
 
-
+export const toggleLike = (element, isLiked) => {
+  return fetch(`${config.baseUrl}/cards/likes/${element}`, {
+    method: isLiked ? 'DELETE': 'PUT',
+    headers: config.headers
+  })
+  .then(result => checkData(result))
+};
