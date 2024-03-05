@@ -1,16 +1,21 @@
+import {validationConfig} from './constants';
+
+
+
 // Показ ошибки
-function showInputError (form, input, errorMessage) {
+function showInputError (validationConfig, form, input, errorMessage) {
   const errorElement = form.querySelector(`.${input.id}-error`);
-  errorElement.classList.add('popup__form-input-error_active');
-  input.classList.add('popup__input_error');
+  errorElement.classList.add(validationConfig.inputErrorActive);
+  input.classList.add(validationConfig.inputError);
   errorElement.textContent = errorMessage;
 };
 
 // Удаление ошибки
-function hideInputError (form, input) {
+function hideInputError (validationConfig ,form, input) {
   const errorElement = form.querySelector(`.${input.id}-error`);
-  input.classList.remove('popup__input_error');
-  errorElement.classList.remove('popup__form-input-error_active');
+  errorElement.classList.remove(validationConfig.inputErrorActive);
+  input.classList.remove(validationConfig.inputError);
+
   errorElement.textContent = '';
 };
 
@@ -24,9 +29,9 @@ function checkInputValidity (form, input) {
   else input.setCustomValidity("");
 
   if (!input.validity.valid) {
-     showInputError(form, input, input.validationMessage);
+     showInputError(validationConfig ,form, input, input.validationMessage);
   }
-  else hideInputError(form, input);
+  else hideInputError(validationConfig, form, input);
 };
 
 
@@ -51,7 +56,7 @@ function toggleButtonState (inputList, buttonElement, inactiveButtonClass) {
 
 
 
-// повесил слушатели на все инпуты в форме (Работает)
+
 function setEventListeners (formEl, formConfig) {
   const {inputSelector, submitButtonSelector, inactiveButtonClass} = formConfig
   const inputList = Array.from(formEl.querySelectorAll(inputSelector));
@@ -87,7 +92,7 @@ const {inputSelector ,submitButtonSelector, inactiveButtonClass} = validationCon
 
 inputList.forEach(input => {
   input.value = '';
-  hideInputError(formElement, input);
+  hideInputError(validationConfig, formElement, input);
   btn.disabled = true;
   btn.classList.add(inactiveButtonClass);
 })

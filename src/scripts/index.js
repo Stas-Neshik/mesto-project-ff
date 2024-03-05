@@ -1,16 +1,18 @@
 import '../pages/index.css';
 import {openModal, closeModal} from './modal';
 import {createCard, deleteCard} from './card';
-import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle, formAvatar, avatarInput} from './constants';
+import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle, formAvatar, avatarInput, popupIsOpen, image} from './constants';
 import {enableValidation, clearValidation} from './validation';
 import {aboutMe, getCard, renameProfile, addCard, changeAvatar} from './api';
 let userId;
 let cardId;
+const myId = '9d8b63c668c0e327bc0f805d';
 
 // Листенеры 
 renameProfileBtn.addEventListener('click', () => {
-  nameInput.value = document.querySelector('.profile__title').textContent;
-  jobInput.value = document.querySelector('.profile__description').textContent;
+
+  nameInput.value = nameTitle.textContent;
+  jobInput.value = jobTitle.textContent;
   openModal(popupProfile)
 });
 
@@ -32,8 +34,8 @@ formAvatar.addEventListener('submit', handleFormSubmitAvatar);
 
 // Ф. Попап картинки
 function openPopupImage(evt) {
-  popupImg.querySelector('.popup__image').src = evt.target.src;
-  popupImg.querySelector('.popup__image').alt = evt.target.alt;
+  image.src = evt.target.src;
+  image.alt = evt.target.alt;
   popupImg.querySelector('.popup__caption').textContent = evt.target.alt;
   openModal(popupImg);
 }
@@ -49,15 +51,15 @@ function handleFormSubmitProfile(evt) {
   const nameValue = nameInput.value;
   const jobValue = jobInput.value;
 
-  const popupButton = popupProfile.querySelector('.popup__button');
-  popupButton.textContent = 'Cохранение...';
+  evt.submitter.textContent = 'Cохранение...';
 
-  renameProfile(nameValue, jobValue);
-
-  nameTitle.textContent = nameValue;
-  jobTitle.textContent = jobValue;
-
-  closeModal(popupProfile);
+  renameProfile(nameValue, jobValue)
+  .then(() => {  
+    nameTitle.textContent = nameValue;
+    jobTitle.textContent = jobValue;
+  })
+  .catch(err => {console.log(err)})
+  .finally(() => closeModal(popupProfile))
 } 
 
 function handleFormSubmitAvatar(evt) {
@@ -65,10 +67,12 @@ function handleFormSubmitAvatar(evt) {
   const avatarValue = avatarInput.value;
 
   changeAvatar(avatarValue)
-  .then(result => profileImg.style.backgroundImage = `url(${result})`);
+  .then(result => profileImg.style.backgroundImage = `url(${result})`)
+  .catch(err => {console.log(err)})
+  .finally(() => closeModal(popupAvatar))
+
   profileImg.style.backgroundImage = `url(${avatarValue})`;
 
-  closeModal(popupAvatar);
 };
 
 
@@ -76,15 +80,23 @@ function addCardSubmit (evt) {
   evt.preventDefault(); 
   const placeValue = cardNameInput.value;
   const urlValue = urlInput.value;
+  const activePopup = document.querySelector(popupIsOpen);
   addCard(placeValue, urlValue)
-
-  const popupButton = popupAddCard.querySelector(".popup__button");
-  popupButton.textContent = "Cохранение...";
-  
-
-  const activePopup = document.querySelector('.popup_is-opened');
-  formAddCard.reset();
-  closeModal(activePopup);
+  .then((res) => {
+    const cardElements = createCard(
+      res,
+      myId,
+      res._id,
+      myId,
+      deleteCard,
+      openPopupImage
+    );
+    cardList.prepend(cardElements);
+  })
+  .then(() => formAddCard.reset())
+  .catch(err => {console.log(err)})
+  .finally(() => closeModal(activePopup))
+  evt.submitter.textContent = "Cохранение...";
 }
 
 
@@ -95,14 +107,18 @@ Promise.all([aboutMe(), getCard()])
   jobTitle.textContent = userInfo.about;
   profileImg.style.backgroundImage = `url('${userInfo.avatar}')`;
 
-  let myId = userInfo._id;
   userId = card.owner._id;
+  console.log(userId);
   cardId = card._id;
 
 
   cardList.append(createCard(card, userId, cardId, myId, deleteCard, openPopupImage))
+  
 })
-);
+)
+.catch(err => {console.log(err)})
+.finally(() => console.log('Выполнено успешно'));
+
 
 
 

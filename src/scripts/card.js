@@ -1,4 +1,4 @@
-import {deleteCardId, toggleLike, addLikeId, deleteLikeId} from './api';
+import {deleteCardId, toggleLike} from './api';
 
 // Функция создания карточки
   const createCard = (card, userId, cardId, myId,deleteCallback, popupImage) => {
@@ -18,13 +18,14 @@ import {deleteCardId, toggleLike, addLikeId, deleteLikeId} from './api';
   };
   renderLikes(card);
 
+
   likeBtn.addEventListener('click', () => {
-    console.log(cardId);
-    console.log(toggleLike);
+
     toggleLike(cardId, likeBtn.classList.contains('card__like-button_is-active')).then((data) => {
       renderLikes(data);
     })
-    .catch(console.error);
+    .catch(err => {console.log(err)})
+    .finally(() => console.log('Выполнено успешно'))
 }
   );
 
@@ -32,8 +33,10 @@ import {deleteCardId, toggleLike, addLikeId, deleteLikeId} from './api';
     deleteBtn.classList.add('card__delete-button-visible');
     deleteBtn.disabled = false;
     deleteBtn.addEventListener('click', (evt) => {
-      deleteCardId(cardId);
-      deleteCallback(evt);
+      deleteCardId(cardId)
+      .then(() => deleteCallback(evt))
+      .catch(err => {console.log(err)})
+      .finally(() => console.log('Выполнено успешно'))
     });
   };
 

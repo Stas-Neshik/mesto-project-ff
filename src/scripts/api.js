@@ -18,8 +18,7 @@ export const aboutMe = () => {
     method: 'GET',
     headers: config.headers
   })
-  .then(result => checkData(result))
-  .catch(err => {console.log(err)}); 
+  .then(result => checkData(result));
 };
 
 
@@ -28,8 +27,7 @@ export const getCard = () =>  {
     method: 'GET',
     headers: config.headers
   })
-  .then(result => checkData(result))
-  .catch(err => {console.log(err)}); 
+  .then(result => checkData(result));
 };
 
 export const renameProfile = (nameUser, job) => {
@@ -41,7 +39,7 @@ export const renameProfile = (nameUser, job) => {
       about: job
     })
   })
-  .catch(err => {console.log(err)}); 
+  .then(result => checkData(result))
 };
 
 export const changeAvatar = url => {
@@ -55,8 +53,7 @@ export const changeAvatar = url => {
       avatar: url
     })
   })
-  .then(result => checkData(result))
-  .catch(err => {console.log(err)}); 
+  .then(result => checkData(result));
 }
 
 
@@ -69,8 +66,7 @@ export const addCard = (place, linkUrl) => {
       link: linkUrl
     })
   })
-  .then(data => data.json())
-  .catch(err => {console.log(err)}); 
+  .then(result => checkData(result));
 }
 
 export const deleteCardId = (userId) => {
@@ -78,7 +74,7 @@ export const deleteCardId = (userId) => {
     method: 'DELETE',
     headers: config.headers
   })
-  .then(result => checkData(result))
+  .then(result => checkData(result));
 };
 
 
@@ -87,5 +83,5 @@ export const toggleLike = (element, isLiked) => {
     method: isLiked ? 'DELETE': 'PUT',
     headers: config.headers
   })
-  .then(result => checkData(result))
+  .then(result => checkData(result));
 };
