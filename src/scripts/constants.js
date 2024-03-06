@@ -26,6 +26,7 @@ export const popupImg = document.querySelector('.popup_type_image');
 export const image = popupImg.querySelector('.popup__image');
 export const popupAvatar = document.querySelector('.popup_type_avatar');
 export const popupIsOpen = '.popup_is-opened';
+export const popupCaption = '.popup__caption';
 
 export const validationConfig = {
   inputErrorActive: 'popup__form-input-error_active',

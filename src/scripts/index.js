@@ -1,12 +1,11 @@
 import '../pages/index.css';
 import {openModal, closeModal} from './modal';
 import {createCard, deleteCard} from './card';
-import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle, formAvatar, avatarInput, popupIsOpen, image} from './constants';
+import {cardList, formElement, nameInput, jobInput, formAddCard, cardNameInput, urlInput, addCardBtn, closeBtns, renameProfileBtn, popupProfile, popupAddCard, popupImg, validationConfig, profileImg, popupAvatar, nameTitle, jobTitle, formAvatar, avatarInput, popupIsOpen, image, popupCaption} from './constants';
 import {enableValidation, clearValidation} from './validation';
 import {aboutMe, getCard, renameProfile, addCard, changeAvatar} from './api';
-let userId;
-let cardId;
-const myId = '9d8b63c668c0e327bc0f805d';
+
+let myId;
 
 // Листенеры 
 renameProfileBtn.addEventListener('click', () => {
@@ -36,7 +35,7 @@ formAvatar.addEventListener('submit', handleFormSubmitAvatar);
 function openPopupImage(evt) {
   image.src = evt.target.src;
   image.alt = evt.target.alt;
-  popupImg.querySelector('.popup__caption').textContent = evt.target.alt;
+  popupImg.querySelector(popupCaption).textContent = evt.target.alt;
   openModal(popupImg);
 }
 
@@ -58,20 +57,27 @@ function handleFormSubmitProfile(evt) {
     nameTitle.textContent = nameValue;
     jobTitle.textContent = jobValue;
   })
-  .catch(err => {console.log(err)})
-  .finally(() => closeModal(popupProfile))
+  .then(() => closeModal(popupProfile))
+  .catch(console.error)
+  .finally(() => {
+    evt.submitter.textContent = 'Сохранить';
+    console.log('Выполнено успешно')})
 } 
 
 function handleFormSubmitAvatar(evt) {
   evt.preventDefault(); 
   const avatarValue = avatarInput.value;
-
   changeAvatar(avatarValue)
   .then(result => profileImg.style.backgroundImage = `url(${result})`)
-  .catch(err => {console.log(err)})
-  .finally(() => closeModal(popupAvatar))
+  .then(evt.submitter.textContent = 'Cохранение...')
+  .then(() => closeModal(popupAvatar))
+  .catch(console.error)
+  .finally(() => {
+    profileImg.style.backgroundImage = `url(${avatarValue})`;
+    evt.submitter.textContent = 'Сохранить';
+    console.log('Выполнено успешно')})
 
-  profileImg.style.backgroundImage = `url(${avatarValue})`;
+   
 
 };
 
@@ -94,29 +100,32 @@ function addCardSubmit (evt) {
     cardList.prepend(cardElements);
   })
   .then(() => formAddCard.reset())
-  .catch(err => {console.log(err)})
-  .finally(() => closeModal(activePopup))
-  evt.submitter.textContent = "Cохранение...";
+  .then( evt.submitter.textContent = "Cохранение...")
+  .then(() => closeModal(activePopup))
+  .catch(console.error)
+  .finally(() => {
+    evt.submitter.textContent = 'Сохранить';
+    console.log('Выполнено успешно')})
 }
 
 
 Promise.all([aboutMe(), getCard()])
-.then(([userInfo, cards]) => cards.forEach(card => {
+.then(([userInfo, cards]) => {
+myId = userInfo._id
+cards.forEach(card => {
 
   nameTitle.textContent = userInfo.name;
   jobTitle.textContent = userInfo.about;
   profileImg.style.backgroundImage = `url('${userInfo.avatar}')`;
-
-  userId = card.owner._id;
-  console.log(userId);
-  cardId = card._id;
+  const userId = card.owner._id;
+  const cardId = card._id;
 
 
   cardList.append(createCard(card, userId, cardId, myId, deleteCard, openPopupImage))
   
 })
-)
-.catch(err => {console.log(err)})
+})
+.catch(console.error)
 .finally(() => console.log('Выполнено успешно'));
 
 

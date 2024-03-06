@@ -24,8 +24,8 @@ import {deleteCardId, toggleLike} from './api';
     toggleLike(cardId, likeBtn.classList.contains('card__like-button_is-active')).then((data) => {
       renderLikes(data);
     })
-    .catch(err => {console.log(err)})
-    .finally(() => console.log('Выполнено успешно'))
+    .catch(console.error)
+    .finally(console.log('Выполнено успешно'))
 }
   );
 
@@ -35,8 +35,8 @@ import {deleteCardId, toggleLike} from './api';
     deleteBtn.addEventListener('click', (evt) => {
       deleteCardId(cardId)
       .then(() => deleteCallback(evt))
-      .catch(err => {console.log(err)})
-      .finally(() => console.log('Выполнено успешно'))
+      .catch(console.error)
+      .finally(console.log('Выполнено успешно'))
     });
   };
 

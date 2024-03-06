@@ -1,13 +1,13 @@
-import {validationConfig} from './constants';
+
 
 
 
 // Показ ошибки
-function showInputError (validationConfig, form, input, errorMessage) {
+function showInputError (validationConfig, form, input) {
   const errorElement = form.querySelector(`.${input.id}-error`);
   errorElement.classList.add(validationConfig.inputErrorActive);
   input.classList.add(validationConfig.inputError);
-  errorElement.textContent = errorMessage;
+  errorElement.textContent = input.validationMessage;
 };
 
 // Удаление ошибки
@@ -21,7 +21,7 @@ function hideInputError (validationConfig ,form, input) {
 
 // Проверка валидации, кастомная ошибка + обычная
 
-function checkInputValidity (form, input) {
+function checkInputValidity (form, input, validationConfig) {
 
   if (input.validity.patternMismatch) {
     input.setCustomValidity(input.dataset.errorMessage);
@@ -29,7 +29,7 @@ function checkInputValidity (form, input) {
   else input.setCustomValidity("");
 
   if (!input.validity.valid) {
-     showInputError(validationConfig ,form, input, input.validationMessage);
+     showInputError(validationConfig ,form, input);
   }
   else hideInputError(validationConfig, form, input);
 };
@@ -43,30 +43,29 @@ function hasInvalidInput (inputList) {
 };
 
   // Закрашиваем кнопку в зависимости от проверки валидации формы
-function toggleButtonState (inputList, buttonElement, inactiveButtonClass) {
+function toggleButtonState (inputList, buttonElement, validationConfig) {
   if (hasInvalidInput(inputList)) {
     buttonElement.disabled = true;
-     buttonElement.classList.add(inactiveButtonClass);
+     buttonElement.classList.add(validationConfig.inactiveButtonClass);
   }
   else {
     buttonElement.disabled = false;
-    buttonElement.classList.remove(inactiveButtonClass);
+    buttonElement.classList.remove(validationConfig.inactiveButtonClass);
   };
 };
 
 
 
+function setEventListeners (formEl, validationConfig) {
 
-function setEventListeners (formEl, formConfig) {
-  const {inputSelector, submitButtonSelector, inactiveButtonClass} = formConfig
-  const inputList = Array.from(formEl.querySelectorAll(inputSelector));
-  const btn = formEl.querySelector(submitButtonSelector);
+  const inputList = Array.from(formEl.querySelectorAll(validationConfig.inputSelector));
+  const btn = formEl.querySelector(validationConfig.submitButtonSelector);
 
 
   inputList.forEach(input => {
     input.addEventListener('input', function () {
-     checkInputValidity(formEl ,input);
-     toggleButtonState(inputList, btn, inactiveButtonClass);
+     checkInputValidity(formEl ,input, validationConfig);
+     toggleButtonState(inputList, btn, validationConfig);
     });
   });
 };
@@ -74,27 +73,26 @@ function setEventListeners (formEl, formConfig) {
 // выбрал все формы на странице (Работает)
 function enableValidation (validationConfig) {
 
-  const {formSelector, ...formConfig} = validationConfig
-  const formList = document.querySelectorAll(formSelector);
-
+  const formList = document.querySelectorAll(validationConfig.formSelector);
   formList.forEach(formEl => {
-    setEventListeners(formEl, formConfig);
+    setEventListeners(formEl, validationConfig);
   });
 }
 
+
 function clearValidation  (formElement, validationConfig) {
 
-const {inputSelector ,submitButtonSelector, inactiveButtonClass} = validationConfig
+// const {inputSelector ,submitButtonSelector, inactiveButtonClass} = validationConfig
 
-  const btn = formElement.querySelector(submitButtonSelector)
-  btn.classList.add(inactiveButtonClass);
-  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+  const btn = formElement.querySelector(validationConfig.submitButtonSelector )
+  btn.classList.add(validationConfig.inactiveButtonClass);
+  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
 
 inputList.forEach(input => {
   input.value = '';
   hideInputError(validationConfig, formElement, input);
   btn.disabled = true;
-  btn.classList.add(inactiveButtonClass);
+  btn.classList.add(validationConfig.inactiveButtonClass);
 })
 
 }
