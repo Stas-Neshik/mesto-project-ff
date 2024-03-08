@@ -9,7 +9,6 @@ let myId;
 
 // Листенеры 
 renameProfileBtn.addEventListener('click', () => {
-
   nameInput.value = nameTitle.textContent;
   jobInput.value = jobTitle.textContent;
   openModal(popupProfile)
@@ -23,7 +22,7 @@ addCardBtn.addEventListener('click', () => {
 profileImg.addEventListener('click', () => {
   clearValidation(formAvatar, validationConfig);
   openModal(popupAvatar)
-})
+});
 
 formAddCard.addEventListener('submit', addCardSubmit);
 
@@ -31,13 +30,15 @@ formElement.addEventListener('submit', handleFormSubmitProfile);
 
 formAvatar.addEventListener('submit', handleFormSubmitAvatar);
 
+
+
 // Ф. Попап картинки
 function openPopupImage(evt) {
   image.src = evt.target.src;
   image.alt = evt.target.alt;
-  popupImg.querySelector(popupCaption).textContent = evt.target.alt;
+  popupCaption.textContent = evt.target.alt;
   openModal(popupImg);
-}
+};
 
 closeBtns.forEach((btn) =>{
 btn.addEventListener('click', (evt) => {
@@ -68,17 +69,15 @@ function handleFormSubmitAvatar(evt) {
   evt.preventDefault(); 
   const avatarValue = avatarInput.value;
   changeAvatar(avatarValue)
-  .then(result => profileImg.style.backgroundImage = `url(${result})`)
+  .then(result => {
+    profileImg.style.backgroundImage = `url(${avatarValue})`
+    profileImg.style.backgroundImage = `url(${result})`})
   .then(evt.submitter.textContent = 'Cохранение...')
   .then(() => closeModal(popupAvatar))
   .catch(console.error)
   .finally(() => {
-    profileImg.style.backgroundImage = `url(${avatarValue})`;
     evt.submitter.textContent = 'Сохранить';
     console.log('Выполнено успешно')})
-
-   
-
 };
 
 
@@ -120,15 +119,11 @@ cards.forEach(card => {
   const userId = card.owner._id;
   const cardId = card._id;
 
-
-  cardList.append(createCard(card, userId, cardId, myId, deleteCard, openPopupImage))
-  
+  cardList.append(createCard(card, userId, cardId, myId, deleteCard, openPopupImage))  
 })
 })
 .catch(console.error)
 .finally(() => console.log('Выполнено успешно'));
-
-
 
 
 enableValidation(validationConfig);
